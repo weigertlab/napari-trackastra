@@ -1,0 +1,37 @@
+name: napari-trackastra
+display_name: trackastra
+# use 'hidden' to remove plugin from napari hub search results
+visibility: public
+# see https://napari.org/stable/plugins/manifest.html for valid categories
+categories: ["Annotation", "Segmentation", "Acquisition"]
+contributions:
+  commands:
+    - id: napari-trackastra.make_sample_data
+      python_name: napari_trackastra._sample_data:make_sample_data
+      title: Load sample data from trackastra
+    - id: napari-trackastra.make_container_widget
+      python_name: napari_trackastra:ImageThreshold
+      title: Make threshold Container widget
+    - id: napari-trackastra.make_magic_widget
+      python_name: napari_trackastra:threshold_magic_widget
+      title: Make threshold magic widget
+    - id: napari-trackastra.make_function_widget
+      python_name: napari_trackastra:threshold_autogenerate_widget
+      title: Make threshold function widget
+    - id: napari-trackastra.make_qwidget
+      python_name: napari_trackastra:ExampleQWidget
+      title: Make example QWidget
+  sample_data:
+    - command: napari-trackastra.make_sample_data
+      display_name: trackastra
+      key: unique_id.1
+  widgets:
+    - command: napari-trackastra.make_container_widget
+      display_name: Container Threshold
+    - command: napari-trackastra.make_magic_widget
+      display_name: Magic Threshold
+    - command: napari-trackastra.make_function_widget
+      autogenerate: true
+      display_name: Autogenerate Threshold
+    - command: napari-trackastra.make_qwidget
+      display_name: Example QWidget
