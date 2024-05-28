@@ -11,7 +11,6 @@ def test_widget():
     viewer.add_labels(mask)
 
     viewer.window.add_dock_widget(Tracker(viewer))
-
     
 
 if __name__ == "__main__":
