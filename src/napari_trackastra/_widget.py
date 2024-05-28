@@ -17,31 +17,29 @@ from trackastra.tracking import graph_to_ctc, graph_to_napari_tracks
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
-def _track_function(model, imgs, masks, **kwargs):    
+
+# logo = Path(__file__).parent/"resources"/"trackastra_logo_small.png"
+# logo_html = f"""<div style="display: flex; 
+# align-items: center;">
+# <img src="{logo}" alt="Logo" style="margin-right: 50px; width: 30px; height: 30px;"> 
+# <span style="line-height: 50px;">
+# Trackastra
+# </div>"""
+
+
+
+def _track_function(model, imgs, masks, mode="greedy", **kwargs):    
     print("Normalizing...")
     imgs = np.stack([normalize(x) for x in imgs])
-    print("Tracking...")
-    track_graph = model.track(imgs, masks, mode="greedy", 
+    print(f"Tracking with mode {mode}...")
+    track_graph = model.track(imgs, masks, mode=mode, 
                                 max_distance=128,
-                                # progbar_class=progress,
+                                progbar_class=progress,
                                 **kwargs)  # or mode="ilp"
     # Visualise in napari
     df, masks_tracked = graph_to_ctc(track_graph,masks,outdir=None)
     napari_tracks, napari_tracks_graph, _ = graph_to_napari_tracks(track_graph)
     return track_graph, masks_tracked, napari_tracks
-
-
-logo = Path(__file__).parent/"resources"/"trackastra_logo_small.png"
-logo_html = f"""<div style="display: flex; 
-align-items: center;">
-<img src="{logo}" alt="Logo" style="margin-right: 50px; width: 30px; height: 30px;"> 
-<span style="line-height: 50px;">
-Trackastra
-</div>"""
-
-
-
-
 
 
 
@@ -52,8 +50,7 @@ class Tracker(Container):
         self._label = create_widget(widget_type="Label", label="<h2>Trackastra</h2>")
         self._image_layer = create_widget(label="Images", annotation="napari.layers.Image")
 
-        self._out_mask, self._out_tracks = None, None
-
+        
         self._mask_layer = create_widget(label="Masks", annotation="napari.layers.Labels")
         self._model_type = RadioButtons(label="Model Type", choices=["Pretrained", "Custom"], orientation="horizontal", value="Pretrained")
         self._model_pretrained = ComboBox(label="Pretrained Model", 
@@ -61,7 +58,11 @@ class Tracker(Container):
         self._model_path = FileEdit(label="Model Path", mode="d")
         self._model_path.hide()
         self._run_button = PushButton(label="Track")
-
+        
+        self._linking_mode = ComboBox(label="Linking", 
+                            choices=("greedy_nodiv","greedy", "ilp"), value="greedy")
+        
+        self._out_mask, self._out_tracks = None, None
 
         self._model_type.changed.connect(self._model_type_changed)
         self._model_pretrained.changed.connect(self._update_model)
@@ -77,6 +78,7 @@ class Tracker(Container):
                 self._model_type,
                 self._model_pretrained,
                 self._model_path,
+                self._linking_mode,
                 self._run_button,
             ]
         )
@@ -96,14 +98,14 @@ class Tracker(Container):
             self.model = Trackastra.from_folder(self._model_path.value, device=device)
 
 
-    def show_activity_dock(self, state=True):
+    def _show_activity_dock(self, state=True):
         # show/hide activity dock if there is actual progress to see
         self._viewer.window._status_bar._toggle_activity_dock(state)
 
 
     def _run(self, event=None):
         self._update_model()
-
+        
         if self.model is None:
             raise ValueError("Model not loaded")
         
@@ -111,7 +113,7 @@ class Tracker(Container):
         masks = np.asarray(self._mask_layer.value.data)
 
         self._show_activity_dock(True)
-        track_graph, masks_tracked, napari_tracks = _track_function(self.model, imgs, masks)
+        track_graph, masks_tracked, napari_tracks = _track_function(self.model, imgs, masks, mode=self._linking_mode.value)
         
         self._mask_layer.value.visible = False
         self._show_activity_dock(False)
