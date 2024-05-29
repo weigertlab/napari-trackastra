@@ -7,7 +7,12 @@ A napari plugin for https://github.com/weigertlab/trackastra.
 
 ## Installation
 
-To install latest development version :
+First install napari (and PyQt), e.g.
+
+    conda install -y -c conda-forge pyqt
+    pip install napari
+
+Then install the latest version with:
 
     pip install git+https://github.com/weigertlab/napari-trackastra.git
 
