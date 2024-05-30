@@ -15,10 +15,10 @@ from trackastra import data
 
 
 def test_data_bacteria() -> list[tuple[numpy.ndarray, dict, str]]:
-    imgs, masks = data.test_data_bacteria() 
+    imgs, masks = data.example_data_bacteria() 
     return [(imgs, dict(name='img'), 'image'), (masks, dict(name='mask'), 'labels')]
 
 
 def test_data_hela() -> list[tuple[numpy.ndarray, dict, str]]:
-    imgs, masks = data.test_data_hela() 
+    imgs, masks = data.example_data_hela() 
     return [(imgs, dict(name='img'), 'image'), (masks, dict(name='mask'), 'labels')]
