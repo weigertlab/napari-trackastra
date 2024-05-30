@@ -15,9 +15,6 @@ classifiers = [
     "License :: OSI Approved :: BSD License",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -30,6 +27,7 @@ dependencies = [
     "magicgui",
     "qtpy",
     "scikit-image",
+    "trackastra",
 ]
 
 [project.optional-dependencies]
@@ -46,10 +44,10 @@ testing = [
 napari-trackastra = "napari_trackastra:napari.yaml"
 
 [project.urls]
-"Bug Tracker" = "https://github.com/maweigert/napari-trackastra/issues"
-"Documentation" = "https://github.com/maweigert/napari-trackastra#README.md"
-"Source Code" = "https://github.com/maweigert/napari-trackastra"
-"User Support" = "https://github.com/maweigert/napari-trackastra/issues"
+"Bug Tracker" = "https://github.com/weigertlab/napari-trackastra/issues"
+"Documentation" = "https://github.com/weigertlab/napari-trackastra#README.md"
+"Source Code" = "https://github.com/weigertlab/napari-trackastra"
+"User Support" = "https://github.com/weigertlab/napari-trackastra/issues"
 
 [build-system]
 requires = ["setuptools>=42.0.0", "wheel"]
@@ -71,7 +69,7 @@ where = ["src"]
 
 [tool.black]
 line-length = 79
-target-version = ['py38', 'py39', 'py310']
+target-version = ['py310']
 
 [tool.ruff]
 line-length = 79
@@ -116,5 +114,5 @@ exclude = [
     "*_vendor*",
 ]
 
-target-version = "py38"
+target-version = "py310"
 fix = true
