@@ -5,8 +5,8 @@ description = "trackastra tracking"
 readme = "README.md"
 license = {file = "LICENSE"}
 authors = [
-  {name = "Martin Weigert, Benjamin Gallusser"},
-  {email = "martin.weigert@epfl.ch, benjamin.gallusser@epfl.ch"},
+  {name = "Martin Weigert", email = "martin.weigert@epfl.ch"},
+  {name = "Benjamin Gallusser", email = "benjamin.gallusser@epfl.ch"},
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
