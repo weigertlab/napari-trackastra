@@ -5,20 +5,20 @@ visibility: public
 categories: ["Segmentation"]
 contributions:
   commands:
-    - id: napari-trackastra.test_data_bacteria
-      python_name: napari_trackastra._sample_data:test_data_bacteria
+    - id: napari-trackastra.example_data_bacteria
+      python_name: napari_trackastra._sample_data:example_data_bacteria
       title: Sample bacteria images and masks
-    - id: napari-trackastra.test_data_hela
-      python_name: napari_trackastra._sample_data:test_data_hela
+    - id: napari-trackastra.example_data_hela
+      python_name: napari_trackastra._sample_data:example_data_hela
       title: Sample bacteria images and masks
     - id: napari-trackastra.track
       python_name: napari_trackastra:Tracker
       title: Create Plugin
   sample_data:
-    - command: napari-trackastra.test_data_bacteria
+    - command: napari-trackastra.example_data_bacteria
       display_name: bacteria
       key: unique_id.1
-    - command: napari-trackastra.test_data_hela
+    - command: napari-trackastra.example_data_hela
       display_name: hela
       key: unique_id.2
   widgets:
