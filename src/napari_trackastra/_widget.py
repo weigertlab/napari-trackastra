@@ -18,14 +18,7 @@ from trackastra.utils import normalize
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
-# logo = Path(__file__).parent/"resources"/"trackastra_logo_small.png"
-# logo_html = f"""<div style="display: flex;
-# align-items: center;">
-# <img src="{logo}" alt="Logo" style="margin-right: 50px; width: 30px; height: 30px;">
-# <span style="line-height: 50px;">
-# Trackastra
-# </div>"""
-
+logo_path = Path(__file__).parent/"resources"/"trackastra_logo_small.png"
 
 def _track_function(model, imgs, masks, mode="greedy", **kwargs):
     print("Normalizing...")
@@ -49,12 +42,9 @@ class Tracker(Container):
     def __init__(self, viewer: "napari.viewer.Viewer"):
         super().__init__()
         self._viewer = viewer
-        self._label = create_widget(
-            widget_type="Label", label="<h2>Trackastra</h2>"
-        )
-        self._image_layer = create_widget(
-            label="Images", annotation="napari.layers.Image"
-        )
+        self._label = create_widget(widget_type="Label", 
+                                    label=f'<img src="{logo_path}"></img>')
+        self._image_layer = create_widget(label="Images", annotation="napari.layers.Image")
 
         self._mask_layer = create_widget(
             label="Masks", annotation="napari.layers.Labels"
@@ -154,4 +144,5 @@ class Tracker(Container):
         if len(lays) > 0:
             lays[0].data = napari_tracks
         else:
-            self._viewer.add_tracks(napari_tracks, name="tracks")
+            self._viewer.add_tracks(napari_tracks, name="tracks", tail_length=5)
+        
