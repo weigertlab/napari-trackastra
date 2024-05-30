@@ -10,6 +10,7 @@ from magicgui.widgets import (
     RadioButtons,
     create_widget,
 )
+from pathlib import Path
 from napari.utils import progress
 from trackastra.model import Trackastra
 from trackastra.tracking import graph_to_ctc, graph_to_napari_tracks
