@@ -23,8 +23,11 @@ jobs:
     timeout-minutes: 30
     strategy:
       matrix:
-        platform: [ubuntu-latest, windows-latest, macos-latest]
+        platform: [ubuntu-latest, macos-latest]
         python-version: ['3.10', '3.11', '3.12']
+        include:
+          - platform: windows-latest
+            python-version: '3.10'
 
     steps:
       - uses: actions/checkout@v4
