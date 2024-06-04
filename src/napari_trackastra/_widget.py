@@ -1,4 +1,7 @@
+from pathlib import Path
+
 import napari
+import npe2
 import numpy as np
 import torch
 import trackastra
@@ -10,20 +13,22 @@ from magicgui.widgets import (
     RadioButtons,
     create_widget,
 )
-from pathlib import Path
+from napari import save_layers
 from napari.utils import progress
 from trackastra.model import Trackastra
-from trackastra.tracking import graph_to_ctc, graph_to_napari_tracks
-from trackastra.utils import normalize
+from trackastra.tracking import (
+    # graph_to_napari_tracks,
+    ctc_to_napari_tracks,
+    graph_to_ctc,
+)
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
-logo_path = Path(__file__).parent/"resources"/"trackastra_logo_small.png"
+logo_path = Path(__file__).parent / "resources" / "trackastra_logo_small.png"
+
 
 def _track_function(model, imgs, masks, mode="greedy", **kwargs):
-    print("Normalizing...")
-    imgs = np.stack([normalize(x) for x in imgs])
     print(f"Tracking with mode {mode}...")
     track_graph = model.track(
         imgs,
@@ -35,17 +40,26 @@ def _track_function(model, imgs, masks, mode="greedy", **kwargs):
     )  # or mode="ilp"
     # Visualise in napari
     df, masks_tracked = graph_to_ctc(track_graph, masks, outdir=None)
-    napari_tracks, napari_tracks_graph, _ = graph_to_napari_tracks(track_graph)
-    return track_graph, masks_tracked, napari_tracks
+    napari_tracks, napari_tracks_graph = ctc_to_napari_tracks(
+        segmentation=masks_tracked, man_track=df
+    )
+
+    # TODO this does not make sure that the track ids match the ids of the dense tracked masks
+    # napari_tracks, napari_tracks_graph, _ = graph_to_napari_tracks(track_graph)
+
+    return track_graph, masks_tracked, napari_tracks, napari_tracks_graph
 
 
 class Tracker(Container):
     def __init__(self, viewer: "napari.viewer.Viewer"):
         super().__init__()
         self._viewer = viewer
-        self._label = create_widget(widget_type="Label", 
-                                    label=f'<img src="{logo_path}"></img>')
-        self._image_layer = create_widget(label="Images", annotation="napari.layers.Image")
+        self._label = create_widget(
+            widget_type="Label", label=f'<img src="{logo_path}"></img>'
+        )
+        self._image_layer = create_widget(
+            label="Images", annotation="napari.layers.Image"
+        )
 
         self._mask_layer = create_widget(
             label="Masks", annotation="napari.layers.Labels"
@@ -63,7 +77,18 @@ class Tracker(Container):
         )
         self._model_path = FileEdit(label="Model Path", mode="d")
         self._model_path.hide()
-        self._run_button = PushButton(label="Track")
+        self._run_button = PushButton(label="TRACK")
+
+        self._save_button = PushButton(
+            label="SAVE\n(CTC format from masks-tracked + tracks)",
+            visible=False,
+        )
+        self._save_path = FileEdit(
+            label="Save tracks to",
+            mode="d",
+            value="~/Desktop/TRA",
+            visible=False,
+        )
 
         self._linking_mode = ComboBox(
             label="Linking",
@@ -78,6 +103,9 @@ class Tracker(Container):
         self._model_path.changed.connect(self._update_model)
         self._run_button.changed.connect(self._run)
 
+        self._save_path.changed.connect(self._save)
+        self._save_button.changed.connect(self._save)
+
         # append into/extend the container with your widgets
         self.extend(
             [
@@ -89,6 +117,8 @@ class Tracker(Container):
                 self._model_path,
                 self._linking_mode,
                 self._run_button,
+                self._save_path,
+                self._save_button,
             ]
         )
 
@@ -124,8 +154,10 @@ class Tracker(Container):
         masks = np.asarray(self._mask_layer.value.data)
 
         self._show_activity_dock(True)
-        track_graph, masks_tracked, napari_tracks = _track_function(
-            self.model, imgs, masks, mode=self._linking_mode.value
+        track_graph, masks_tracked, napari_tracks, napari_tracks_graph = (
+            _track_function(
+                self.model, imgs, masks, mode=self._linking_mode.value
+            )
         )
 
         self._mask_layer.value.visible = False
@@ -145,5 +177,32 @@ class Tracker(Container):
         if len(lays) > 0:
             lays[0].data = napari_tracks
         else:
-            self._viewer.add_tracks(napari_tracks, name="tracks", tail_length=5)
-        
+            self._viewer.add_tracks(
+                napari_tracks,
+                graph=napari_tracks_graph,
+                name="tracks",
+                tail_length=5,
+            )
+
+        self._save_path.show()
+        self._save_button.show()
+
+    def _save(self, event=None):
+        pm = npe2.PluginManager.instance()
+
+        outdir = self._save_path.value
+        writer_contrib = pm.get_writer(
+            outdir,
+            ["labels", "tracks"],
+            "napari-ctc-io",
+        )[0]
+
+        save_layers(
+            path=outdir,
+            layers=[
+                self._viewer.layers["masks_tracked"],
+                self._viewer.layers["tracks"],
+            ],
+            plugin="napari-ctc-io",
+            _writer=writer_contrib,
+        )
