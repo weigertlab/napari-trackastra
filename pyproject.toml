@@ -48,7 +48,7 @@ napari-trackastra = "napari_trackastra:napari.yaml"
 "User Support" = "https://github.com/weigertlab/napari-trackastra/issues"
 
 [build-system]
-requires = ["setuptools>=42.0.0", "wheel"]
+requires = ["setuptools>=64","setuptools_scm>=8", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
