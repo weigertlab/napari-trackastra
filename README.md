@@ -1,5 +1,10 @@
 # napari-trackastra
 
+[![PyPI](https://img.shields.io/pypi/v/napari-trackastra.svg?color=green)](https://pypi.org/project/napari-trackastra)
+[![tests](https://github.com/weigertlab/napari-trackastra/workflows/tests/badge.svg)](https://github.com/weigertlab/napari-trackastra/actions)
+[![codecov](https://codecov.io/gh/weigertlab/napari-trackastra/branch/main/graph/badge.svg)](https://codecov.io/gh/weigertlab/napari-trackastra)
+[![napari hub](https://img.shields.io/endpoint?url=https://api.napari-hub.org/shields/napari-trackastra)](https://napari-hub.org/plugins/napari-trackastra)
+
 A napari plugin for cell tracking with [`trackastra`](https://github.com/weigertlab/trackastra).
 
 https://github.com/weigertlab/napari-trackastra/assets/11042162/2751e81a-3992-4c60-bceb-c3f340732435
