@@ -35,7 +35,6 @@ testing = [
     "pytest",  # https://docs.pytest.org/en/latest/contents.html
     "pytest-cov",  # https://pytest-cov.readthedocs.io/en/latest/
     "pytest-qt",  # https://pytest-qt.readthedocs.io/en/latest/
-    "napari",
     "pyqt5",
 ]
 
@@ -55,8 +54,8 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools]
 include-package-data = true
 
-[tool.setuptools.dynamic]
-version = {attr = "napari_trackastra.__init__.__version__"}
+[tool.setuptools_scm]
+write_to = "src/napari_trackastra/_version.py"
 
 [tool.setuptools.packages.find]
 where = ["src"]
