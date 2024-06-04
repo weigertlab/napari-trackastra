@@ -5,8 +5,10 @@ description = "Napari plugin for cell tracking with trackastra."
 readme = "README.md"
 license = {file = "LICENSE"}
 authors = [
-  {name = "Martin Weigert", email = "martin.weigert@epfl.ch"},
-  {name = "Benjamin Gallusser", email = "benjamin.gallusser@epfl.ch"},
+  {name = "Benjamin Gallusser"},
+  {email = "benjamin.gallusser@epfl.ch"},
+  {name = "Martin Weigert"},
+  {email = "martin.weigert@epfl.ch"},
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
