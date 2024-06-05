@@ -17,7 +17,6 @@ from napari import save_layers
 from napari.utils import progress
 from trackastra.model import Trackastra
 from trackastra.tracking import (
-    # graph_to_napari_tracks,
     ctc_to_napari_tracks,
     graph_to_ctc,
 )
@@ -38,14 +37,12 @@ def _track_function(model, imgs, masks, mode="greedy", **kwargs):
         progbar_class=progress,
         **kwargs,
     )  # or mode="ilp"
+
     # Visualise in napari
     df, masks_tracked = graph_to_ctc(track_graph, masks, outdir=None)
     napari_tracks, napari_tracks_graph = ctc_to_napari_tracks(
         segmentation=masks_tracked, man_track=df
     )
-
-    # TODO this does not make sure that the track ids match the ids of the dense tracked masks
-    # napari_tracks, napari_tracks_graph, _ = graph_to_napari_tracks(track_graph)
 
     return track_graph, masks_tracked, napari_tracks, napari_tracks_graph
 
