@@ -29,7 +29,7 @@ dependencies = [
     "qtpy",
     "scikit-image",
     "trackastra",
-    "napari-open-ctc",
+    "napari-ctc-io",
 ]
 
 [project.optional-dependencies]

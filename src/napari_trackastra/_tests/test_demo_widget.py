@@ -10,7 +10,10 @@ def test_demo_widget():
     viewer.add_image(img)
     viewer.add_labels(mask)
 
-    viewer.window.add_dock_widget(Tracker(viewer))
+    tracker = Tracker(viewer)
+    viewer.window.add_dock_widget(tracker)
+    tracker._run()
+    tracker._save()
 
 
 if __name__ == "__main__":
