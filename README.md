@@ -23,6 +23,8 @@ Then install the latest version from PyPI with:
 pip install napari-trackastra
 ```
 
+For tracking with an integer linear program (ILP, which is optional), follow the [installation instructions of the main `trackastra` package](https://github.com/weigertlab/trackastra/blob/main/README.md#installation).
+
 Notes:
 - On Windows currently only supported for Python 3.10.
 
