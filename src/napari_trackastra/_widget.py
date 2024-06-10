@@ -1,3 +1,6 @@
+import os
+
+os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "1"
 from pathlib import Path
 
 import napari
@@ -20,9 +23,6 @@ from trackastra.tracking import (
     ctc_to_napari_tracks,
     graph_to_ctc,
 )
-
-device = "cuda" if torch.cuda.is_available() else "cpu"
-
 
 logo_path = Path(__file__).parent / "resources" / "trackastra_logo_small.png"
 
@@ -130,12 +130,10 @@ class Tracker(Container):
     def _update_model(self, event=None):
         if self._model_type.value == "Pretrained":
             self.model = Trackastra.from_pretrained(
-                self._model_pretrained.value, device=device
+                self._model_pretrained.value
             )
         else:
-            self.model = Trackastra.from_folder(
-                self._model_path.value, device=device
-            )
+            self.model = Trackastra.from_folder(self._model_path.value)
 
     def _show_activity_dock(self, state=True):
         # show/hide activity dock if there is actual progress to see
