@@ -11,14 +11,7 @@ A napari plugin for cell tracking with [`trackastra`](https://github.com/weigert
 
 
 ## Installation
-
-First install napari (and PyQt), e.g.
-```
-conda install -y -c conda-forge pyqt
-pip install napari
-```
-
-Then install the latest version from PyPI with:
+Install the latest version from PyPI with:
 ```
 pip install napari-trackastra
 ```
@@ -33,7 +26,7 @@ Notes:
 - `trackastra` expects a timeseries of raw images and corresponding segmentations masks as input.
 - We provide some demo data at `File > Open Sample > trackastra`.
 - Tracked cells can be directly saved to [Cell Tracking Challenge format](https://celltrackingchallenge.net/datasets/).
-- Results can be drag-and-dropped back into napari for inspection. 
+- Results can be drag-and-dropped back into napari for inspection.
 
 [napari]: https://github.com/napari/napari
 [tox]: https://tox.readthedocs.io/en/latest/

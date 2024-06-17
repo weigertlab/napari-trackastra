@@ -23,7 +23,7 @@ classifiers = [
 ]
 requires-python = ">=3.10"
 dependencies = [
-    "napari<0.5",
+    "napari[all]<0.5",
     "numpy",
     "magicgui",
     "qtpy",
