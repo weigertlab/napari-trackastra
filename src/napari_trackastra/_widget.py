@@ -171,20 +171,23 @@ class Tracker(Container):
         )
         if len(lays) > 0:
             lays[0].data = masks_tracked
+            lays[0].scale = self._mask_layer.value.scale
         else:
-            self._viewer.add_labels(masks_tracked, name="masks_tracked")
+            self._viewer.add_labels(masks_tracked, name="masks_tracked",scale=self._mask_layer.value.scale)
 
         lays = tuple(
             lay for lay in self._viewer.layers if lay.name == "tracks"
         )
         if len(lays) > 0:
             lays[0].data = napari_tracks
+            lays[0].scale = self._image_layer.value.scale
         else:
             self._viewer.add_tracks(
                 napari_tracks,
                 graph=napari_tracks_graph,
                 name="tracks",
                 tail_length=5,
+                scale=self._image_layer.value.scale
             )
 
         self._save_path.show()
