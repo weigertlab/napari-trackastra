@@ -156,6 +156,9 @@ class Tracker(Container):
         imgs = np.asarray(self._image_layer.value.data)
         masks = np.asarray(self._mask_layer.value.data)
 
+        imgs_scale = self._image_layer.value.scale
+        masks_scale = self._mask_layer.value.scale
+        
         self._show_activity_dock(True)
         track_graph, masks_tracked, napari_tracks, napari_tracks_graph = (
             _track_function(
@@ -171,20 +174,23 @@ class Tracker(Container):
         )
         if len(lays) > 0:
             lays[0].data = masks_tracked
+            lays[0].scale = masks_scale
         else:
-            self._viewer.add_labels(masks_tracked, name="masks_tracked")
+            self._viewer.add_labels(masks_tracked, name="masks_tracked",scale=self._mask_layer.value.scale)
 
         lays = tuple(
             lay for lay in self._viewer.layers if lay.name == "tracks"
         )
         if len(lays) > 0:
             lays[0].data = napari_tracks
+            lays[0].scale = imgs_scale
         else:
             self._viewer.add_tracks(
                 napari_tracks,
                 graph=napari_tracks_graph,
                 name="tracks",
                 tail_length=5,
+                scale=imgs_scale,
             )
 
         self._save_path.show()
