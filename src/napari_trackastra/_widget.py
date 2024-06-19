@@ -48,9 +48,14 @@ def _track_function(model, imgs, masks, mode="greedy", **kwargs):
 
 
 class Tracker(Container):
-    def __init__(self, viewer: "napari.viewer.Viewer"):
+    def __init__(
+        self,
+        viewer: "napari.viewer.Viewer",
+        device: str | None = None,
+    ):
         super().__init__()
         self._viewer = viewer
+        self._device = device
         self._label = create_widget(
             widget_type="Label", label=f'<img src="{logo_path}"></img>'
         )
@@ -130,10 +135,13 @@ class Tracker(Container):
     def _update_model(self, event=None):
         if self._model_type.value == "Pretrained":
             self.model = Trackastra.from_pretrained(
-                self._model_pretrained.value
+                self._model_pretrained.value,
+                device=self._device,
             )
         else:
-            self.model = Trackastra.from_folder(self._model_path.value)
+            self.model = Trackastra.from_folder(
+                self._model_path.value, device=self._device
+            )
 
     def _show_activity_dock(self, state=True):
         # show/hide activity dock if there is actual progress to see

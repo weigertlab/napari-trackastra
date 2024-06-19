@@ -10,7 +10,8 @@ def test_demo_widget():
     viewer.add_image(img)
     viewer.add_labels(mask)
 
-    tracker = Tracker(viewer)
+    # Test widget only on CPU
+    tracker = Tracker(viewer, device="cpu")
     viewer.window.add_dock_widget(tracker)
     tracker._run()
     tracker._save()
