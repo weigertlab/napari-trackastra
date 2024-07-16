@@ -20,3 +20,4 @@ def test_demo_widget():
 
 if __name__ == "__main__":
     test_demo_widget()
+    napari.run()

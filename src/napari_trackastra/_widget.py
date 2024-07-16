@@ -12,6 +12,7 @@ from magicgui.widgets import (
     ComboBox,
     Container,
     FileEdit,
+    Slider,
     PushButton,
     RadioButtons,
     create_widget,
@@ -33,7 +34,6 @@ def _track_function(model, imgs, masks, mode="greedy", **kwargs):
         imgs,
         masks,
         mode=mode,
-        max_distance=128,
         progbar_class=progress,
         **kwargs,
     )  # or mode="ilp"
@@ -79,24 +79,29 @@ class Tracker(Container):
         )
         self._model_path = FileEdit(label="Model Path", mode="d")
         self._model_path.hide()
-        self._run_button = PushButton(label="TRACK")
+        self._run_button = PushButton(label="Track")
 
         self._save_button = PushButton(
-            label="SAVE\n(CTC format from masks-tracked + tracks)",
+            label="Save results\n(CTC format masks-tracked/tracks)",
             visible=False,
         )
         self._save_path = FileEdit(
-            label="Save tracks to",
+            label="Save path",
             mode="d",
             value="~/Desktop/TRA",
             visible=False,
         )
 
         self._linking_mode = ComboBox(
-            label="Linking",
+            label="Linking mode",
             choices=("greedy_nodiv", "greedy", "ilp"),
             value="greedy",
         )
+        self._max_distance = Slider(
+            label="Max distance",
+            min=0,
+            max=256,
+            value=128)
 
         self._out_mask, self._out_tracks = None, None
 
@@ -118,6 +123,7 @@ class Tracker(Container):
                 self._model_pretrained,
                 self._model_path,
                 self._linking_mode,
+                self._max_distance,
                 self._run_button,
                 self._save_path,
                 self._save_button,
@@ -162,7 +168,10 @@ class Tracker(Container):
         self._show_activity_dock(True)
         track_graph, masks_tracked, napari_tracks, napari_tracks_graph = (
             _track_function(
-                self.model, imgs, masks, mode=self._linking_mode.value
+                self.model, imgs, masks, 
+                mode=self._linking_mode.value,         
+                max_distance=self._max_distance.value,
+
             )
         )
 
