@@ -2,7 +2,7 @@ import os
 
 os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "1"
 from pathlib import Path
-
+import warnings
 import napari
 import npe2
 import numpy as np
@@ -30,6 +30,11 @@ logo_path = Path(__file__).parent / "resources" / "trackastra_logo_small.png"
 
 def _track_function(model, imgs, masks, mode="greedy", **kwargs):
     print(f"Tracking with mode {mode}...")
+    
+    if len(imgs) != len(masks):
+        warnings.warn("Number of images and masks do not match, cropping to the minimum")
+        imgs, masks = imgs[: len(masks)], masks[: len(imgs)]
+        
     track_graph = model.track(
         imgs,
         masks,
