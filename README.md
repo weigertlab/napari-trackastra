@@ -11,14 +11,15 @@ A napari plugin for cell tracking with [`trackastra`](https://github.com/weigert
 
 
 ## Installation
-Install the latest version from PyPI with:
-```
-pip install napari-trackastra
-```
+1. Please install napari as outline [here](https://napari.org/stable/tutorials/fundamentals/installation.html).
 
-For tracking with an integer linear program (ILP, which is optional), follow the [installation instructions of the main `trackastra` package](https://github.com/weigertlab/trackastra/blob/main/README.md#installation).
+2. After that, install the latest version of this plugin from PyPI with:
+    ```
+    pip install napari-trackastra
+    ```
 
 Notes:
+- For tracking with an integer linear program (ILP, which is optional), follow the [installation instructions of the main `trackastra` package](https://github.com/weigertlab/trackastra/blob/main/README.md#installation).
 - On Windows currently only supported for Python 3.10.
 
 ## Usage
