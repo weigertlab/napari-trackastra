@@ -11,7 +11,7 @@ A napari plugin for cell tracking with [`trackastra`](https://github.com/weigert
 
 
 ## Installation
-1. Please install napari as outline [here](https://napari.org/stable/tutorials/fundamentals/installation.html).
+1. Please install napari as outlined [here](https://napari.org/stable/tutorials/fundamentals/installation.html).
 
 2. After that, install the latest version of this plugin from PyPI with:
     ```
