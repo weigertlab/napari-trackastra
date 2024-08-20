@@ -23,9 +23,9 @@ classifiers = [
 ]
 requires-python = ">=3.10"
 dependencies = [
-    "napari",
     "numpy",
     "magicgui",
+    "qtpy",
     "scikit-image",
     "trackastra",
     "napari-ctc-io",
@@ -37,6 +37,7 @@ testing = [
     "pytest",  # https://docs.pytest.org/en/latest/contents.html
     "pytest-cov",  # https://pytest-cov.readthedocs.io/en/latest/
     "pytest-qt",  # https://pytest-qt.readthedocs.io/en/latest/
+    "napari",
     "pyqt5",
 ]
 
