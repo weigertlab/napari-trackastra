@@ -24,8 +24,6 @@ classifiers = [
 requires-python = ">=3.10"
 dependencies = [
     "numpy",
-    "magicgui",
-    "qtpy",
     "scikit-image",
     "trackastra",
     "napari-ctc-io",
