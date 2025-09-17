@@ -54,7 +54,7 @@ def _track_function(model, imgs, masks, mode="greedy", **kwargs):
         man_track=ctc_tracks,
     )
 
-    return track_graph, masks_tracked, napari_tracks, napari_tracks_graph
+    return track_graph, ctc_masks, napari_tracks, napari_tracks_graph
 
 
 class Tracker(Container):
