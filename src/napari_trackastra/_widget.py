@@ -30,12 +30,14 @@ logo_path = Path(__file__).parent / "resources" / "trackastra_logo_small.png"
 
 def _track_function(model, imgs, masks, mode="greedy", **kwargs):
     print(f"Tracking with mode {mode}...")
-    
+
     if len(imgs) != len(masks):
-        warnings.warn("Number of images and masks do not match, cropping to the minimum")
+        warnings.warn(
+            "Number of images and masks do not match, cropping to the minimum"
+        )
         imgs, masks = imgs[: len(masks)], masks[: len(imgs)]
-        
-    track_graph = model.track(
+
+    track_graph, masks_tracked = model.track(
         imgs,
         masks,
         mode=mode,
@@ -44,9 +46,12 @@ def _track_function(model, imgs, masks, mode="greedy", **kwargs):
     )  # or mode="ilp"
 
     # Visualise in napari
-    df, masks_tracked = graph_to_ctc(track_graph, masks, outdir=None)
+    ctc_tracks, ctc_masks = graph_to_ctc(
+        track_graph, masks_tracked, outdir=None
+    )
     napari_tracks, napari_tracks_graph = ctc_to_napari_tracks(
-        segmentation=masks_tracked, man_track=df
+        segmentation=ctc_masks,
+        man_track=ctc_tracks,
     )
 
     return track_graph, masks_tracked, napari_tracks, napari_tracks_graph
@@ -103,10 +108,8 @@ class Tracker(Container):
             value="greedy",
         )
         self._max_distance = Slider(
-            label="Max distance",
-            min=0,
-            max=256,
-            value=128)
+            label="Max distance", min=0, max=256, value=128
+        )
 
         self._out_mask, self._out_tracks = None, None
 
@@ -169,14 +172,15 @@ class Tracker(Container):
 
         imgs_scale = self._image_layer.value.scale
         masks_scale = self._mask_layer.value.scale
-        
+
         self._show_activity_dock(True)
         track_graph, masks_tracked, napari_tracks, napari_tracks_graph = (
             _track_function(
-                self.model, imgs, masks, 
-                mode=self._linking_mode.value,         
+                self.model,
+                imgs,
+                masks,
+                mode=self._linking_mode.value,
                 max_distance=self._max_distance.value,
-
             )
         )
 
@@ -190,7 +194,11 @@ class Tracker(Container):
             lays[0].data = masks_tracked
             lays[0].scale = masks_scale
         else:
-            self._viewer.add_labels(masks_tracked, name="masks_tracked",scale=self._mask_layer.value.scale)
+            self._viewer.add_labels(
+                masks_tracked,
+                name="masks_tracked",
+                scale=self._mask_layer.value.scale,
+            )
 
         lays = tuple(
             lay for lay in self._viewer.layers if lay.name == "tracks"
