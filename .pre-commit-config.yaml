@@ -8,9 +8,12 @@ repos:
         exclude: ^\.napari-hub/.*
       - id: check-yaml # checks for correct yaml syntax for github actions ex.
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.3.4
+    rev: v0.11.10
     hooks:
-      - id: ruff
+    - id: ruff-check
+      args: [--fix, --unsafe-fixes, --verbose]
+    - id: ruff-format
+      args: [--preview]
   - repo: https://github.com/psf/black
     rev: 24.3.0
     hooks:
