@@ -20,6 +20,7 @@ def test_demo_widget(output_format):
 
     tracker._save_format.value = output_format
     tracker._save()
+    viewer.close()
 
 
 if __name__ == "__main__":
