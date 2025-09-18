@@ -6,9 +6,9 @@ readme = "README.md"
 license = {file = "LICENSE"}
 authors = [
   {name = "Benjamin Gallusser"},
-  {email = "benjamin.gallusser@epfl.ch"},
+  {email = "bgallusser@gmail.com"},
   {name = "Martin Weigert"},
-  {email = "martin.weigert@epfl.ch"},
+  {email = "marweigert@gmail.com"},
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -27,6 +27,7 @@ dependencies = [
     "scikit-image",
     "trackastra",
     "napari-ctc-io",
+    "napari-geff",
 ]
 
 [project.optional-dependencies]

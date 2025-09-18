@@ -26,7 +26,9 @@ Notes:
 
 - `trackastra` expects a timeseries of raw images and corresponding segmentations masks as input.
 - We provide some demo data at `File > Open Sample > trackastra`.
-- Tracked cells can be directly saved to [Cell Tracking Challenge format](https://celltrackingchallenge.net/datasets/).
+- Tracked cells can be directly saved in
+    - [Cell Tracking Challenge format (CTC)](https://celltrackingchallenge.net/datasets/)
+    - [Graph Exchange File Format (GEFF)](https://liveimagetrackingtools.org/geff/)
 - Results can be drag-and-dropped back into napari for inspection.
 
 [napari]: https://github.com/napari/napari
