@@ -25,9 +25,9 @@ requires-python = ">=3.10"
 dependencies = [
     "numpy",
     "scikit-image",
-    "trackastra>=0.4.0",
+    "trackastra>=0.4.1",
     "napari-ctc-io",
-    "napari-geff",
+    "napari-geff>=0.0.3",
 ]
 
 [project.optional-dependencies]
