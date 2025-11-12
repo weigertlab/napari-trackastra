@@ -39,6 +39,13 @@ testing = [
     "napari",
     "pyqt5",
 ]
+dev = [
+    "napari-trackastra[testing]",
+    "pre-commit",
+    "ruff",
+    "twine",
+    "build",
+]
 
 [project.entry-points."napari.manifest"]
 napari-trackastra = "napari_trackastra:napari.yaml"
