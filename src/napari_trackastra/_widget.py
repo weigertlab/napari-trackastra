@@ -130,6 +130,7 @@ class Tracker(Container):
         self._model_type.changed.connect(self._model_type_changed)
         self._model_pretrained.changed.connect(self._update_model)
         self._model_path.changed.connect(self._update_model)
+        self._linking_mode.changed.connect(self._update_linking_mode)
         self._run_button.changed.connect(self._run)
 
         # self._save_path.changed.connect(self._save)
@@ -171,6 +172,20 @@ class Tracker(Container):
                 self._model_path.value, device=self._device
             )
 
+    def _update_linking_mode(self, event=None):
+        if self._linking_mode.value == "ilp":
+            try:
+                import motile  # noqa F401
+
+                return True
+            except ModuleNotFoundError:
+                napari.utils.notifications.show_warning(
+                    "For tracking with an ILP, please conda install the optional `motile`"
+                    " dependency following https://funkelab.github.io/motile/install.html."
+                )
+                return False
+        return True
+
     def _show_activity_dock(self, state=True):
         # show/hide activity dock if there is actual progress to see
         self._viewer.window._status_bar._toggle_activity_dock(state)
@@ -180,6 +195,9 @@ class Tracker(Container):
 
         if self.model is None:
             raise ValueError("Model not loaded")
+
+        if not self._update_linking_mode():
+            return
 
         imgs = np.asarray(self._image_layer.value.data)
         masks = np.asarray(self._mask_layer.value.data)
