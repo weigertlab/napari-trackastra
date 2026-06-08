@@ -3,7 +3,7 @@ display_name: trackastra
 # use 'hidden' to remove plugin from napari hub search results
 visibility: public
 categories: ["Image Processing"]
-icon: resources/icon.png
+icon: napari_trackastra.resources:icon.png
 contributions:
   commands:
     - id: napari-trackastra.example_data_bacteria
