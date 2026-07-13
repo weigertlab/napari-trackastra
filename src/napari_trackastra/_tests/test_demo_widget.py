@@ -1,3 +1,5 @@
+import sys
+
 import napari
 import pytest
 from trackastra.data import example_data_bacteria
@@ -5,6 +7,10 @@ from trackastra.data import example_data_bacteria
 from napari_trackastra._widget import Tracker
 
 
+@pytest.mark.skipif(
+    sys.platform.startswith("win"),
+    reason="Napari/Qt integration test crashes on Windows CI (access violation in OpenGL).",
+)
 @pytest.mark.parametrize("output_format", ["CTC", "GEFF"])
 def test_demo_widget(output_format):
     viewer = napari.Viewer()
