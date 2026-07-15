@@ -173,17 +173,6 @@ class Tracker(Container):
             )
 
     def _update_linking_mode(self, event=None):
-        if self._linking_mode.value == "ilp":
-            try:
-                import motile  # noqa F401
-
-                return True
-            except ModuleNotFoundError:
-                napari.utils.notifications.show_warning(
-                    "For tracking with an ILP, please conda install the optional `motile`"
-                    " dependency following https://funkelab.github.io/motile/install.html."
-                )
-                return False
         return True
 
     def _show_activity_dock(self, state=True):
