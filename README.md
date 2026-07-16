@@ -20,7 +20,6 @@ A napari plugin for cell tracking with [`trackastra`](https://github.com/weigert
     ```
 
 Notes:
-- For tracking with an integer linear program (ILP, which is optional), follow the [installation instructions of the main `trackastra` package](https://github.com/weigertlab/trackastra/blob/main/README.md#installation).
 - On Windows currently only supported for Python 3.10.
 
 ## Usage
